@@ -37,7 +37,7 @@ RUN cd /tmp && \
 
 # Get nginx-rtmp module.
 RUN cd /tmp && \
-  git -b dev clone https://github.com/sergey-dryabzhinsky/nginx-rtmp-module.git
+  git clone -b dev https://github.com/sergey-dryabzhinsky/nginx-rtmp-module.git
 
 # Compile nginx with nginx-rtmp module.
 RUN cd /tmp/nginx-${NGINX_VERSION} && \
