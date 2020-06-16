@@ -1,5 +1,5 @@
 ARG NGINX_VERSION=1.16.1
-ARG NGINX_RTMP_VERSION=1.2.1
+# ARG NGINX_RTMP_VERSION=1.2.1
 ARG FFMPEG_VERSION=4.2.2
 
 
@@ -7,7 +7,7 @@ ARG FFMPEG_VERSION=4.2.2
 # Build the NGINX-build image.
 FROM alpine:3.11 as build-nginx
 ARG NGINX_VERSION
-ARG NGINX_RTMP_VERSION
+# ARG NGINX_RTMP_VERSION
 
 # Build dependencies.
 RUN apk add --update \
@@ -26,7 +26,8 @@ RUN apk add --update \
   pcre-dev \
   pkgconf \
   pkgconfig \
-  zlib-dev
+  zlib-dev \
+  git
 
 # Get nginx source.
 RUN cd /tmp && \
@@ -36,14 +37,13 @@ RUN cd /tmp && \
 
 # Get nginx-rtmp module.
 RUN cd /tmp && \
-  wget https://github.com/arut/nginx-rtmp-module/archive/v${NGINX_RTMP_VERSION}.tar.gz && \
-  tar zxf v${NGINX_RTMP_VERSION}.tar.gz && rm v${NGINX_RTMP_VERSION}.tar.gz
+  git -b dev clone https://github.com/sergey-dryabzhinsky/nginx-rtmp-module.git
 
 # Compile nginx with nginx-rtmp module.
 RUN cd /tmp/nginx-${NGINX_VERSION} && \
   ./configure \
   --prefix=/usr/local/nginx \
-  --add-module=/tmp/nginx-rtmp-module-${NGINX_RTMP_VERSION} \
+  --add-module=/tmp/nginx-rtmp-module \
   --conf-path=/etc/nginx/nginx.conf \
   --with-threads \
   --with-file-aio \
