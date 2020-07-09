@@ -48,6 +48,7 @@ RUN cd /tmp/nginx-${NGINX_VERSION} && \
   --with-threads \
   --with-file-aio \
   --with-http_ssl_module \
+  --with-http_stub_status_module \
   --with-debug \
   --with-cc-opt="-Wimplicit-fallthrough=0" && \
   cd /tmp/nginx-${NGINX_VERSION} && make && make install
